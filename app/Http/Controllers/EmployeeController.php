@@ -18,10 +18,17 @@ class EmployeeController extends Controller
             'name' => 'required|string|max:255',
             'occupation' => 'required|string|max:255',
             'salary_type' => 'required|string|max:50',
-            'salary' => 'required|numeric'
+            'salary' => 'required|numeric',
+            'status' => 'sometimes|in:active,inactive',
+            'employment_type' => 'sometimes|in:fulltime,parttime',
         ]);
 
+        // set defaults if not provided
+        $validated['status'] = $validated['status'] ?? 'active';
+        $validated['employment_type'] = $validated['employment_type'] ?? 'fulltime';
+
         $employee = Employee::create($validated);
+
         return response()->json([
             'message' => 'Employee created successfully',
             'employee' => $employee
@@ -39,7 +46,9 @@ class EmployeeController extends Controller
             'name' => 'sometimes|required|string|max:255',
             'occupation' => 'sometimes|required|string|max:255',
             'salary_type' => 'sometimes|required|string|max:50',
-            'salary' => 'sometimes|required|numeric'
+            'salary' => 'sometimes|required|numeric',
+            'status' => 'sometimes|in:active,inactive',
+            'employment_type' => 'sometimes|in:fulltime,parttime',
         ]);
 
         $employee->update($validated);
